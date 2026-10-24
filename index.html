@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOW & GRIND — Revista Digital Minimalista</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        mono: {
+                            50: '#fafafa',
+                            100: '#f4f4f5',
+                            200: '#e4e4e7',
+                            300: '#d4d4d8',
+                            400: '#a1a1aa',
+                            500: '#71717a',
+                            600: '#52525b',
+                            700: '#3f3f46',
+                            800: '#27272a',
+                            900: '#18181b',
+                            950: '#09090b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-serif-custom { font-family: 'Playfair Display', serif; }
+        .font-mono-custom { font-family: 'JetBrains Mono', monospace; }
+        
+        /* High contrast image styling */
+        .img-minimal {
+            filter: grayscale(100%) contrast(110%);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .img-minimal {
+            filter: grayscale(100%) contrast(125%);
+            transform: scale(1.03);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #a1a1aa; }
+        .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
+
+        /* Modal blur backdrop */
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-mono-50 text-mono-900 dark:bg-mono-950 dark:text-mono-100 antialiased transition-colors duration-300 selection:bg-mono-900 selection:text-mono-50 dark:selection:bg-mono-100 dark:selection:text-mono-950">
+
+    <!-- TOP TICKER BAR -->
+    <div class="border-b border-mono-200 dark:border-mono-800 bg-mono-100 dark:bg-mono-900 text-[10px] font-mono-custom uppercase tracking-widest py-1.5 px-4 overflow-hidden text-mono-500 dark:text-mono-400">
+        <div class="max-w-7xl mx-mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-6">
+                <span class="flex items-center"><span class="inline-block w-1.5 h-1.5 rounded-full bg-mono-900 dark:bg-mono-100 mr-2 animate-pulse"></span>EDICIÓN VOL. III</span>
+                <span class="hidden md:inline">SISTEMAS • RENDIMIENTO • ESTÉTICA</span>
+            </div>
+            <div class="flex space-x-4">
+                <span>[2026]</span>
+                <span id="liveTime">00:00:00 UTC</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-mono-50/90 dark:bg-mono-950/90 modal-backdrop border-b border-mono-200 dark:border-mono-800">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="text-xl font-black tracking-tighter uppercase font-mono-custom flex items-center">
+                GLOW & GRIND<span class="text-mono-400 dark:text-mono-600 ml-1">.</span>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-medium uppercase tracking-widest text-mono-600 dark:text-mono-400">
+                <a href="#pilares" class="hover:text-mono-950 dark:hover:text-mono-50 transition-colors">Pilares</a>
+                <a href="#lecturas" class="hover:text-mono-950 dark:hover:text-mono-50 transition-colors">Lecturas Esenciales</a>
+                <a href="#tracker" class="hover:text-mono-950 dark:hover:text-mono-50 transition-colors">Sistema Diario</a>
+                <a href="#articulos" class="hover:text-mono-950 dark:hover:text-mono-50 transition-colors">Archivo</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <!-- DARK MODE TOGGLE -->
+                <button id="themeToggle" class="p-2 border border-mono-200 dark:border-mono-800 rounded-none hover:bg-mono-200 dark:hover:bg-mono-900 transition-colors" aria-label="Cambiar tema">
+                    <svg id="sunIcon" class="w-4 h-4 hidden dark:block text-mono-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="moonIcon" class="w-4 h-4 block dark:hidden text-mono-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+                <button id="mobileMenuBtn" class="md:hidden p-2 border border-mono-200 dark:border-mono-800">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- MOBILE MENU -->
+        <div id="mobileMenu" class="hidden md:hidden border-b border-mono-200 dark:border-mono-800 bg-mono-50 dark:bg-mono-950 px-6 py-4 space-y-3 font-mono-custom text-xs uppercase tracking-widest">
+            <a href="#pilares" class="block py-1 hover:text-mono-500">Pilares</a>
+            <a href="#lecturas" class="block py-1 hover:text-mono-500">Lecturas Esenciales</a>
+            <a href="#tracker" class="block py-1 hover:text-mono-500">Sistema Diario</a>
+            <a href="#articulos" class="block py-1 hover:text-mono-500">Archivo</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="border-b border-mono-200 dark:border-mono-800 py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+                <div class="lg:col-span-8 space-y-6">
+                    <p class="font-mono-custom text-xs uppercase tracking-widest text-mono-500">/ MANIFIESTO Y METODOLOGÍA</p>
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight uppercase leading-[0.95]">
+                        El tiempo es oro.<br/>La disciplina es estilo.
+                    </h1>
+                    <p class="text-mono-600 dark:text-mono-400 max-w-2xl text-lg font-light leading-relaxed">
+                        Una publicación independiente dedicada a la optimización personal de la juventud moderna: sistemas de productividad, desarrollo físico, hábitos circadianos y arquitectura de vestuario.
+                    </p>
+                </div>
+                <div class="lg:col-span-4 space-y-6 lg:border-l lg:border-mono-200 dark:lg:border-mono-800 lg:pl-8">
+                    <div class="aspect-[4/5] bg-mono-200 dark:bg-mono-900 overflow-hidden relative group border border-mono-200 dark:border-mono-800">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop" alt="Minimal Architecture" class="w-full h-full object-cover img-minimal" />
+                        <div class="absolute inset-0 bg-mono-950/20 group-hover:bg-transparent transition-colors"></div>
+                        <div class="absolute bottom-4 left-4 right-4 p-3 bg-mono-950/80 text-mono-100 modal-backdrop border border-mono-800 text-[11px] font-mono-custom uppercase tracking-wider">
+                            Fig. 01 — Estructura y Rigor
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PILARES DE METODOLOGÍA -->
+    <section id="pilares" class="border-b border-mono-200 dark:border-mono-800 py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-mono-200 dark:border-mono-800">
+                <div>
+                    <span class="font-mono-custom text-xs text-mono-500 uppercase tracking-widest">/ ARCHIVO CORE</span>
+                    <h2 class="text-3xl font-bold uppercase tracking-tight mt-1">Los Cuatro Pilares</h2>
+                </div>
+                <p class="text-xs font-mono-custom text-mono-500 mt-2 md:mt-0">[ Haz clic en cualquier pilar para abrir la guía completa ]</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- PILAR 1 -->
+                <div class="border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/30 p-6 flex flex-col justify-between group hover:border-mono-900 dark:hover:border-mono-100 transition-all cursor-pointer" onclick="openPillarModal('tiempo')">
+                    <div class="space-y-4">
+                        <div class="aspect-[4/3] bg-mono-200 dark:bg-mono-800 overflow-hidden border border-mono-200 dark:border-mono-800">
+                            <img src="https://images.unsplash.com/photo-1508057198894-247b23fe5ade?q=80&w=800&auto=format&fit=crop" alt="Tiempo y Sistemas" class="w-full h-full object-cover img-minimal" />
+                        </div>
+                        <span class="font-mono-custom text-xs text-mono-400">01 / TEMPO</span>
+                        <h3 class="text-xl font-bold uppercase tracking-tight">Sistemas de Tiempo</h3>
+                        <p class="text-xs text-mono-600 dark:text-mono-400 leading-relaxed">
+                            Gestión de horas mediante bloques de enfoque profundo. Eliminación del ruido digital y auditoría diaria de atención.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-mono-200 dark:border-mono-800 flex justify-between items-center">
+                        <span class="text-[11px] font-mono-custom uppercase tracking-wider text-mono-500">Explorar Guía</span>
+                        <span class="font-mono-custom text-xs">→</span>
+                    </div>
+                </div>
+
+                <!-- PILAR 2 -->
+                <div class="border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/30 p-6 flex flex-col justify-between group hover:border-mono-900 dark:hover:border-mono-100 transition-all cursor-pointer" onclick="openPillarModal('deporte')">
+                    <div class="space-y-4">
+                        <div class="aspect-[4/3] bg-mono-200 dark:bg-mono-800 overflow-hidden border border-mono-200 dark:border-mono-800">
+                            <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop" alt="Cuerpo y Fuerza" class="w-full h-full object-cover img-minimal" />
+                        </div>
+                        <span class="font-mono-custom text-xs text-mono-400">02 / VIGOR</span>
+                        <h3 class="text-xl font-bold uppercase tracking-tight">Cuerpo & Fuerza</h3>
+                        <p class="text-xs text-mono-600 dark:text-mono-400 leading-relaxed">
+                            Entrenamiento de resistencia y calistenia. La disciplina física como catalizador de claridad mental y resiliencia.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-mono-200 dark:border-mono-800 flex justify-between items-center">
+                        <span class="text-[11px] font-mono-custom uppercase tracking-wider text-mono-500">Explorar Guía</span>
+                        <span class="font-mono-custom text-xs">→</span>
+                    </div>
+                </div>
+
+                <!-- PILAR 3 -->
+                <div class="border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/30 p-6 flex flex-col justify-between group hover:border-mono-900 dark:hover:border-mono-100 transition-all cursor-pointer" onclick="openPillarModal('habitos')">
+                    <div class="space-y-4">
+                        <div class="aspect-[4/3] bg-mono-200 dark:bg-mono-800 overflow-hidden border border-mono-200 dark:border-mono-800">
+                            <img src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=800&auto=format&fit=crop" alt="Hábitos y Cuidado" class="w-full h-full object-cover img-minimal" />
+                        </div>
+                        <span class="font-mono-custom text-xs text-mono-400">03 / HABITUS</span>
+                        <h3 class="text-xl font-bold uppercase tracking-tight">Hábitos & Ritmos</h3>
+                        <p class="text-xs text-mono-600 dark:text-mono-400 leading-relaxed">
+                            Cuidado de la piel minimalista, optimización del sueño circadiano y rutinas matutinas de fricción cero.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-mono-200 dark:border-mono-800 flex justify-between items-center">
+                        <span class="text-[11px] font-mono-custom uppercase tracking-wider text-mono-500">Explorar Guía</span>
+                        <span class="font-mono-custom text-xs">→</span>
+                    </div>
+                </div>
+
+                <!-- PILAR 4 -->
+                <div class="border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/30 p-6 flex flex-col justify-between group hover:border-mono-900 dark:hover:border-mono-100 transition-all cursor-pointer" onclick="openPillarModal('moda')">
+                    <div class="space-y-4">
+                        <div class="aspect-[4/3] bg-mono-200 dark:bg-mono-800 overflow-hidden border border-mono-200 dark:border-mono-800">
+                            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=800&auto=format&fit=crop" alt="Estilo y Moda" class="w-full h-full object-cover img-minimal" />
+                        </div>
+                        <span class="font-mono-custom text-xs text-mono-400">04 / FORMA</span>
+                        <h3 class="text-xl font-bold uppercase tracking-tight">Estilo & Armario</h3>
+                        <p class="text-xs text-mono-600 dark:text-mono-400 leading-relaxed">
+                            Arquitectura de vestuario cápsula en escala monocromática. Calidad, funcionalidad y corte sobre tendencias pasajeras.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-mono-200 dark:border-mono-800 flex justify-between items-center">
+                        <span class="text-[11px] font-mono-custom uppercase tracking-wider text-mono-500">Explorar Guía</span>
+                        <span class="font-mono-custom text-xs">→</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LECTURAS ESENCIALES (GRID ARQUITECTÓNICO) -->
+    <section id="lecturas" class="border-b border-mono-200 dark:border-mono-800 py-20 bg-mono-100/30 dark:bg-mono-900/20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 pb-6 border-b border-mono-200 dark:border-mono-800">
+                <div>
+                    <span class="font-mono-custom text-xs text-mono-500 uppercase tracking-widest">/ SELECCIÓN EDITORIAL</span>
+                    <h2 class="text-3xl font-bold uppercase tracking-tight mt-1">Lecturas Esenciales</h2>
+                </div>
+                <div class="mt-4 md:mt-0 font-mono-custom text-xs space-x-2">
+                    <button onclick="filterReads('all')" class="px-3 py-1 border border-mono-900 dark:border-mono-100 bg-mono-900 text-mono-50 dark:bg-mono-100 dark:text-mono-950 read-filter" data-filter="all">TODOS</button>
+                    <button onclick="filterReads('sistemas')" class="px-3 py-1 border border-mono-200 dark:border-mono-800 hover:border-mono-400 read-filter" data-filter="sistemas">SISTEMAS</button>
+                    <button onclick="filterReads('estilistica')" class="px-3 py-1 border border-mono-200 dark:border-mono-800 hover:border-mono-400 read-filter" data-filter="estilistica">ESTILO</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" id="readsContainer">
+                <!-- FEATURED READ (LARGE) -->
+                <div class="lg:col-span-8 border border-mono-200 dark:border-mono-800 bg-mono-50 dark:bg-mono-950 p-8 flex flex-col justify-between group cursor-pointer read-item" data-category="sistemas" onclick="openArticleModal('deep-work')">
+                    <div class="space-y-6">
+                        <div class="aspect-[16/9] bg-mono-200 dark:bg-mono-900 overflow-hidden border border-mono-200 dark:border-mono-800">
+                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200&auto=format&fit=crop" alt="Deep Work Studio" class="w-full h-full object-cover img-minimal" />
+                        </div>
+                        <div class="flex items-center space-x-4 font-mono-custom text-xs text-mono-400">
+                            <span>ESSAY #01</span>
+                            <span>•</span>
+                            <span>12 MIN DE LECTURA</span>
+                            <span>•</span>
+                            <span class="uppercase">SISTEMAS DE ENFOQUE</span>
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-bold uppercase tracking-tight leading-tight group-hover:underline underline-offset-4">
+                            Arquitectura del Enfoque Profundo: Cómo aislar tu atención en una era hipersaturada
+                        </h3>
+                        <p class="text-mono-600 dark:text-mono-400 text-sm leading-relaxed">
+                            Un desglose estructural sobre cómo diseñar un espacio de trabajo sin distracciones, estructurar bloques de atención de 90 minutos y utilizar el aburrimiento consciente como motor creativo.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-mono-200 dark:border-mono-800 flex justify-between items-center font-mono-custom text-xs">
+                        <span>LEER ENSAYO COMPLETO</span>
+                        <span>[PDF + TEXTO] →</span>
+                    </div>
+                </div>
+
+                <!-- SIDE READS -->
+                <div class="lg:col-span-4 flex flex-col gap-8">
+                    <!-- READ 2 -->
+                    <div class="border border-mono-200 dark:border-mono-800 bg-mono-50 dark:bg-mono-950 p-6 flex flex-col justify-between flex-1 group cursor-pointer read-item" data-category="estilistica" onclick="openArticleModal('armario-capsula')">
+                        <div class="space-y-4">
+                            <div class="aspect-[3/2] bg-mono-200 dark:bg-mono-900 overflow-hidden border border-mono-200 dark:border-mono-800">
+                                <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=800&auto=format&fit=crop" alt="Armario Capsula" class="w-full h-full object-cover img-minimal" />
+                            </div>
+                            <div class="flex items-center space-x-2 font-mono-custom text-[10px] text-mono-400">
+                                <span>GUÍA #02</span>
+                                <span>•</span>
+                                <span>6 MIN</span>
+                            </div>
+                            <h4 class="text-lg font-bold uppercase tracking-tight group-hover:underline">El Armario Cápsula Monocromático: Regla de las 12 Prendas</h4>
+                            <p class="text-xs text-mono-600 dark:text-mono-400">Reducción del estrés de decisión mediante un uniforme funcional y atemporal.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-mono-200 dark:border-mono-800 text-[11px] font-mono-custom flex justify-between">
+                            <span>VER GUÍA</span>
+                            <span>→</span>
+                        </div>
+                    </div>
+
+                    <!-- READ 3 -->
+                    <div class="border border-mono-200 dark:border-mono-800 bg-mono-50 dark:bg-mono-950 p-6 flex flex-col justify-between flex-1 group cursor-pointer read-item" data-category="sistemas" onclick="openArticleModal('sueno-circadiano')">
+                        <div class="space-y-4">
+                            <div class="aspect-[3/2] bg-mono-200 dark:bg-mono-900 overflow-hidden border border-mono-200 dark:border-mono-800">
+                                <img src="https://images.unsplash.com/photo-1511295742362-92c96b124e52?q=80&w=800&auto=format&fit=crop" alt="Ritmos Circadianos" class="w-full h-full object-cover img-minimal" />
+                            </div>
+                            <div class="flex items-center space-x-2 font-mono-custom text-[10px] text-mono-400">
+                                <span>ANÁLISIS #03</span>
+                                <span>•</span>
+                                <span>8 MIN</span>
+                            </div>
+                            <h4 class="text-lg font-bold uppercase tracking-tight group-hover:underline">Optimización del Sueño: Biología y Luz</h4>
+                            <p class="text-xs text-mono-600 dark:text-mono-400">El impacto directo de la luz solar matutina y el bloqueo de luz azul nocturna en la energía diaria.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-mono-200 dark:border-mono-800 text-[11px] font-mono-custom flex justify-between">
+                            <span>VER ANÁLISIS</span>
+                            <span>→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SISTEMA DIARIO DE HÁBITOS (INTERACTIVO) -->
+    <section id="tracker" class="border-b border-mono-200 dark:border-mono-800 py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="font-mono-custom text-xs text-mono-500 uppercase tracking-widest">/ APLICACIÓN PRÁCTICA</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold uppercase tracking-tight">El Protocolo Diario de Fricción Cero</h2>
+                    <p class="text-sm text-mono-600 dark:text-mono-400 leading-relaxed">
+                        Este sistema está diseñado para eliminar la fatiga por decisión. Completa los 5 micro-hábitos no negociables del día para mantener tu barra de rendimiento activa.
+                    </p>
+                    
+                    <!-- PROGRESS BAR -->
+                    <div class="p-6 border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/40 space-y-3">
+                        <div class="flex justify-between text-xs font-mono-custom uppercase">
+                            <span>ESTADO DEL PROTOCOLO</span>
+                            <span id="trackerPercent">0%</span>
+                        </div>
+                        <div class="w-full h-2 bg-mono-200 dark:bg-mono-800 overflow-hidden">
+                            <div id="trackerBar" class="h-full bg-mono-900 dark:bg-mono-100 transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <p id="trackerStatus" class="text-[11px] font-mono-custom text-mono-500 pt-1">
+                            Selecciona las tareas completadas hoy.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="border border-mono-200 dark:border-mono-800 divide-y divide-mono-200 dark:divide-mono-800 bg-mono-50 dark:bg-mono-950">
+                        <!-- HABIT ITEM 1 -->
+                        <label class="p-5 flex items-center justify-between cursor-pointer hover:bg-mono-100/50 dark:hover:bg-mono-900/30 transition-colors">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" onchange="updateTracker()" class="habit-check w-4 h-4 rounded-none accent-mono-900 dark:accent-mono-100 cursor-pointer">
+                                <div>
+                                    <span class="block text-sm font-semibold uppercase tracking-tight">01. Luz Solar Directa (15 min)</span>
+                                    <span class="block text-xs text-mono-500 font-mono-custom">Activación de cortisol dentro de la primera hora tras despertar</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono-custom text-mono-400">AM</span>
+                        </label>
+
+                        <!-- HABIT ITEM 2 -->
+                        <label class="p-5 flex items-center justify-between cursor-pointer hover:bg-mono-100/50 dark:hover:bg-mono-900/30 transition-colors">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" onchange="updateTracker()" class="habit-check w-4 h-4 rounded-none accent-mono-900 dark:accent-mono-100 cursor-pointer">
+                                <div>
+                                    <span class="block text-sm font-semibold uppercase tracking-tight">02. Bloque de Enfoque Profundo (90 min)</span>
+                                    <span class="block text-xs text-mono-500 font-mono-custom">Cero teléfono, cero pestañas secundarias, una sola tarea</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono-custom text-mono-400">AM/PM</span>
+                        </label>
+
+                        <!-- HABIT ITEM 3 -->
+                        <label class="p-5 flex items-center justify-between cursor-pointer hover:bg-mono-100/50 dark:hover:bg-mono-900/30 transition-colors">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" onchange="updateTracker()" class="habit-check w-4 h-4 rounded-none accent-mono-900 dark:accent-mono-100 cursor-pointer">
+                                <div>
+                                    <span class="block text-sm font-semibold uppercase tracking-tight">03. Movimiento / Actividad Física</span>
+                                    <span class="block text-xs text-mono-500 font-mono-custom">Sesión de pesas, calistenia o 45 min de caminata intensa</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono-custom text-mono-400">PM</span>
+                        </label>
+
+                        <!-- HABIT ITEM 4 -->
+                        <label class="p-5 flex items-center justify-between cursor-pointer hover:bg-mono-100/50 dark:hover:bg-mono-900/30 transition-colors">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" onchange="updateTracker()" class="habit-check w-4 h-4 rounded-none accent-mono-900 dark:accent-mono-100 cursor-pointer">
+                                <div>
+                                    <span class="block text-sm font-semibold uppercase tracking-tight">04. Cuidado Facial Básico & Hidratación</span>
+                                    <span class="block text-xs text-mono-500 font-mono-custom">Limpiador suave + Hidratante + Protector solar</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono-custom text-mono-400">AM/PM</span>
+                        </label>
+
+                        <!-- HABIT ITEM 5 -->
+                        <label class="p-5 flex items-center justify-between cursor-pointer hover:bg-mono-100/50 dark:hover:bg-mono-900/30 transition-colors">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" onchange="updateTracker()" class="habit-check w-4 h-4 rounded-none accent-mono-900 dark:accent-mono-100 cursor-pointer">
+                                <div>
+                                    <span class="block text-sm font-semibold uppercase tracking-tight">05. Desconexión Digital (60 min antes de dormir)</span>
+                                    <span class="block text-xs text-mono-500 font-mono-custom">Lectura en papel o libreta de notas. Cero luz azul</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono-custom text-mono-400">PM</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARCHIVO COMPLETO DE ARTÍCULOS -->
+    <section id="articulos" class="py-20 border-b border-mono-200 dark:border-mono-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 pb-6 border-b border-mono-200 dark:border-mono-800">
+                <div>
+                    <span class="font-mono-custom text-xs text-mono-500 uppercase tracking-widest">/ ÍNDICE GENERAL</span>
+                    <h2 class="text-3xl font-bold uppercase tracking-tight mt-1">Archivo de Publicaciones</h2>
+                </div>
+                <span class="font-mono-custom text-xs text-mono-500 mt-2 md:mt-0">[ 6 PUBLICACIONES DISPONIBLES ]</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- ARTICLE CARD 1 -->
+                <article class="border border-mono-200 dark:border-mono-800 bg-mono-50 dark:bg-mono-950 p-6 flex flex-col justify-between group cursor-pointer" onclick="openArticleModal('skincare')">
+                    <div class="space-y-4">
+                        <div class="aspect-[16/10] bg-mono-200 dark:bg-mono-900 overflow-hidden border border-mono-200 dark:border-mono-800">
+                            <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop" alt="Skincare Minimalista" class="w-full h-full object-cover img-minimal" />
+                        </div>
+                        <span class="font-mono-custom text-[10px] text-mono-400 uppercase">HÁBITOS / SKINCARE</span>
+                        <h3 class="text-lg font-bold uppercase tracking-tight group-hover:underline">Rutina de Piel de 3 Pasos para Jóvenes Activos</h3>
+                        <p class="text-xs text-mono-600 dark:text-mono-400">Cómo mantener la barrera cutánea sana sin rutinas complejas de 10 productos.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-mono-200 dark:border-mono-800 text-[11px] font-mono-custom flex justify-between">
+                        <span>LEER ARTÍCULO</span>
+                        <span>→</span>
+                    </div>
+                </article>
+
+                <!-- ARTICLE CARD 2 -->
+                <article class="border border-mono-200 dark:border-mono-800 bg-mono-50 dark:bg-mono-950 p-6 flex flex-col justify-between group cursor-pointer" onclick="openArticleModal('calistenia')">
+                    <div class="space-y-4">
+                        <div class="aspect-[16/10] bg-mono-200 dark:bg-mono-900 overflow-hidden border border-mono-200 dark:border-mono-800">
+                            <img src="https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=800&auto=format&fit=crop" alt="Calistenia Minimalista" class="w-full h-full object-cover img-minimal" />
+                        </div>
+                        <span class="font-mono-custom text-[10px] text-mono-400 uppercase">ENTRENAMIENTO / CALISTENIA</span>
+                        <h3 class="text-lg font-bold uppercase tracking-tight group-hover:underline">Calistenia Urbana: Fuerza Máxima con Equipo Cero</h3>
+                        <p class="text-xs text-mono-600 dark:text-mono-400">Dominadas, fondos y flexiones estrictas para construir una base física sólida.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-mono-200 dark:border-mono-800 text-[11px] font-mono-custom flex justify-between">
+                        <span>LEER ARTÍCULO</span>
+                        <span>→</span>
+                    </div>
+                </article>
+
+                <!-- ARTICLE CARD 3 -->
+                <article class="border border-mono-200 dark:border-mono-800 bg-mono-50 dark:bg-mono-950 p-6 flex flex-col justify-between group cursor-pointer" onclick="openArticleModal('procrastinacion')">
+                    <div class="space-y-4">
+                        <div class="aspect-[16/10] bg-mono-200 dark:bg-mono-900 overflow-hidden border border-mono-200 dark:border-mono-800">
+                            <img src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=800&auto=format&fit=crop" alt="Procrastinación" class="w-full h-full object-cover img-minimal" />
+                        </div>
+                        <span class="font-mono-custom text-[10px] text-mono-400 uppercase">SISTEMAS / MENTALIDAD</span>
+                        <h3 class="text-lg font-bold uppercase tracking-tight group-hover:underline">La Regla de los 5 Minutos para Vencer la Inercia</h3>
+                        <p class="text-xs text-mono-600 dark:text-mono-400">Técnica neurocognitiva para iniciar tareas complejas reduciendo la resistencia inicial.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-mono-200 dark:border-mono-800 text-[11px] font-mono-custom flex justify-between">
+                        <span>LEER ARTÍCULO</span>
+                        <span>→</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER & NEWSLETTER -->
+    <footer class="py-20 bg-mono-100 dark:bg-mono-900 border-t border-mono-200 dark:border-mono-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-mono-200 dark:border-mono-800">
+                <div class="lg:col-span-6 space-y-4">
+                    <span class="font-mono-custom text-xs text-mono-500 uppercase tracking-widest">/ SUSCRIPCIÓN DIRECTA</span>
+                    <h3 class="text-2xl font-bold uppercase tracking-tight">Recibe la edición semanal</h3>
+                    <p class="text-xs text-mono-600 dark:text-mono-400 max-w-md leading-relaxed">
+                        Un correo electrónico cada domingo a las 08:00 AM con 3 reflexiones sobre tiempo, 1 protocolo de entrenamiento y 1 recomendación estilística. Sin spam.
+                    </p>
+                    <form onsubmit="handleSubscribe(event)" class="flex gap-2 max-w-md pt-2">
+                        <input type="email" required placeholder="tu.email@dominio.com" class="bg-mono-50 dark:bg-mono-950 border border-mono-300 dark:border-mono-700 px-4 py-2.5 text-xs font-mono-custom focus:outline-none focus:border-mono-900 dark:focus:border-mono-100 flex-1">
+                        <button type="submit" class="bg-mono-900 text-mono-50 dark:bg-mono-100 dark:text-mono-950 px-6 py-2.5 text-xs font-mono-custom uppercase tracking-wider hover:opacity-90 transition-opacity">
+                            Unirse
+                        </button>
+                    </form>
+                    <p id="subMessage" class="text-[11px] font-mono-custom text-mono-500 hidden">✓ Suscripción confirmada. Bienvenido a la edición privada.</p>
+                </div>
+
+                <div class="lg:col-span-3 space-y-3 font-mono-custom text-xs">
+                    <span class="block text-mono-400 uppercase tracking-widest mb-4">/ NAVEGACIÓN</span>
+                    <a href="#pilares" class="block text-mono-600 dark:text-mono-400 hover:text-mono-900 dark:hover:text-mono-100">Pilares Metodológicos</a>
+                    <a href="#lecturas" class="block text-mono-600 dark:text-mono-400 hover:text-mono-900 dark:hover:text-mono-100">Lecturas Esenciales</a>
+                    <a href="#tracker" class="block text-mono-600 dark:text-mono-400 hover:text-mono-900 dark:hover:text-mono-100">Tracker de Hábitos</a>
+                    <a href="#articulos" class="block text-mono-600 dark:text-mono-400 hover:text-mono-900 dark:hover:text-mono-100">Archivo General</a>
+                </div>
+
+                <div class="lg:col-span-3 space-y-3 font-mono-custom text-xs">
+                    <span class="block text-mono-400 uppercase tracking-widest mb-4">/ MANIFIESTO</span>
+                    <p class="text-mono-500 text-[11px] leading-relaxed">
+                        GLOW & GRIND es un proyecto independiente de optimización de estilo de vida para jóvenes. Diseñado bajo principios de diseño minimalista y alta densidad de valor.
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] font-mono-custom text-mono-400 space-y-4 md:space-y-0">
+                <span>© 2026 GLOW & GRIND — TODOS LOS DERECHOS RESERVADOS.</span>
+                <span>DESARROLLADO BAJO ARQUITECTURA MONOCROMÁTICA</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE LECTURA (ARTÍCULOS Y PILARES) -->
+    <div id="modalBackdrop" class="fixed inset-0 bg-mono-950/80 modal-backdrop z-50 hidden flex items-center justify-center p-4 sm:p-6" onclick="closeModal(event)">
+        <div class="bg-mono-50 dark:bg-mono-950 border border-mono-200 dark:border-mono-800 max-w-3xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-10 relative space-y-6" onclick="event.stopPropagation()">
+            
+            <button onclick="closeModalDirect()" class="absolute top-6 right-6 p-2 border border-mono-200 dark:border-mono-800 hover:bg-mono-200 dark:hover:bg-mono-900 transition-colors font-mono-custom text-xs">
+                [ CERRAR ✕ ]
+            </button>
+
+            <div id="modalContent">
+                <!-- DINAMICALLY LOADED CONTENT -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // DARK MODE TOGGLE
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        // MOBILE MENU
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // LIVE UTC CLOCK
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toUTCString().split(' ')[4] + ' UTC';
+            document.getElementById('liveTime').textContent = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // TRACKER LOGIC
+        function updateTracker() {
+            const checkboxes = document.querySelectorAll('.habit-check');
+            const checked = document.querySelectorAll('.habit-check:checked');
+            const total = checkboxes.length;
+            const count = checked.length;
+            const percentage = Math.round((count / total) * 100);
+
+            const bar = document.getElementById('trackerBar');
+            const percentText = document.getElementById('trackerPercent');
+            const statusText = document.getElementById('trackerStatus');
+
+            bar.style.width = percentage + '%';
+            percentText.textContent = percentage + '%';
+
+            if (percentage === 0) {
+                statusText.textContent = 'Selecciona las tareas completadas hoy.';
+            } else if (percentage < 100) {
+                statusText.textContent = `Protocolo activo: ${count} de ${total} micro-hábitos completados.`;
+            } else {
+                statusText.textContent = '✓ PROTOCOLO 100% COMPLETADO — RENDIMIENTO DÍA OPTIMIZADO.';
+            }
+        }
+
+        // FILTER ESSENTIAL READS
+        function filterReads(category) {
+            const items = document.querySelectorAll('.read-item');
+            const buttons = document.querySelectorAll('.read-filter');
+
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-filter') === category) {
+                    btn.classList.add('bg-mono-900', 'text-mono-50', 'dark:bg-mono-100', 'dark:text-mono-950');
+                    btn.classList.remove('border-mono-200', 'dark:border-mono-800');
+                } else {
+                    btn.classList.remove('bg-mono-900', 'text-mono-50', 'dark:bg-mono-100', 'dark:text-mono-950');
+                    btn.classList.add('border-mono-200', 'dark:border-mono-800');
+                }
+            });
+
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // NEWSLETTER SUBMIT
+        function handleSubscribe(e) {
+            e.preventDefault();
+            const msg = document.getElementById('subMessage');
+            msg.classList.remove('hidden');
+            e.target.reset();
+        }
+
+        // MODAL CONTENT DATABASE
+        const pillarData = {
+            'tiempo': {
+                tag: 'PILAR 01 / SISTEMAS DE TIEMPO',
+                title: 'Arquitectura y Auditoría de Tiempo',
+                subtitle: 'Cómo maximizar la producción de alto valor minimizando la fricción cognitiva.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">El tiempo no es un recurso recargable. La mayoría de los jóvenes pierde entre 3 y 5 horas diarias en micro-distracciones pasivas. La solución no es trabajar más horas, sino implementar bloques de enfoque cerrado.</p>
+                    <div class="p-4 border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/40 space-y-2 font-mono-custom text-xs">
+                        <span class="block text-mono-900 dark:text-mono-100 font-bold">PROTOCOLO DE 3 PASOS:</span>
+                        <p>1. Auditoría de Tiempo: Registra cada bloque de 30 minutos durante 3 días.</p>
+                        <p>2. Regla de los 90 Minutos: Un único objetivo prioritario por sesión sin teléfono presente.</p>
+                        <p>3. Cierre Diario: Define las 3 tareas clave del día siguiente antes de apagar las luces.</p>
+                    </div>
+                `
+            },
+            'deporte': {
+                tag: 'PILAR 02 / CUERPO & FUERZA',
+                title: 'Entrenamiento de Resistencia & Rendimiento',
+                subtitle: 'La construcción del carácter a través de la tensión física programada.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">El cuerpo humano responde al estímulo y a la adaptación. Entrenar con pesas o calistenia estricta regula el sistema endocrino, mejora la sensibilidad a la insulina y entrena la capacidad mental para sostener incomodidad prolongada.</p>
+                    <div class="p-4 border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/40 space-y-2 font-mono-custom text-xs">
+                        <span class="block text-mono-900 dark:text-mono-100 font-bold">FUNDAMENTOS DE SOBRECARGA:</span>
+                        <p>• Sobrecarga Progresiva: Aumenta repeticiones, peso o calidad de forma semanal.</p>
+                        <p>• Movimientos Compuestos: Sentadilla, Peso Muerto, Dominadas y Press.</p>
+                        <p>• Descanso Circadiano: Mínimo 7.5 horas de sueño continuo para reparación muscular.</p>
+                    </div>
+                `
+            },
+            'habitos': {
+                tag: 'PILAR 03 / HÁBITOS & RITMOS',
+                title: 'Alineación de Ritmos Circadianos',
+                subtitle: 'Sincronización biológica mediante exposición a la luz y cuidado personal.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">Tus hábitos diarios determinan tu energía basal. La exposición al sol de la mañana configura tu reloj biológico interno, asegurando una producción óptima de melatonina 14 horas más tarde.</p>
+                    <div class="p-4 border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/40 space-y-2 font-mono-custom text-xs">
+                        <span class="block text-mono-900 dark:text-mono-100 font-bold">RUTINA DE CUIDADO Y ENERGÍA:</span>
+                        <p>• Sol Matutino: 10-15 minutos sin gafas de sol antes de las 10:00 AM.</p>
+                        <p>• Skincare Minimal: Limpiador suave + Hidratante con Niacinamida + SPF 50.</p>
+                        <p>• Apagón Digital: Cortar pantallas de alta intensidad 1 hora antes de acostarse.</p>
+                    </div>
+                `
+            },
+            'moda': {
+                tag: 'PILAR 04 / ESTILO & ARMARIO',
+                title: 'Arquitectura de Vestuario Cápsula',
+                subtitle: 'Reducción del ruido estético a través del corte, el tono y la durabilidad.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">Vestir bien no requiere seguir tendencias efímeras de redes sociales. Se trata de encontrar cortes atemporales, materiales resistentes (algodón pesado, lana, lino) y una paleta monocromática que combine de forma automática.</p>
+                    <div class="p-4 border border-mono-200 dark:border-mono-800 bg-mono-100/50 dark:bg-mono-900/40 space-y-2 font-mono-custom text-xs">
+                        <span class="block text-mono-900 dark:text-mono-100 font-bold">REGLAS DEL VESTUARIO MONOCROMÁTICO:</span>
+                        <p>• Paleta Base: Negro profundo, Blanco óptico, Gris marengo, Beige neutro.</p>
+                        <p>• Ajuste Proporcionado: Hombros estructurados, caídas limpias, cero logotipos gigantes.</p>
+                        <p>• Mantenimiento: Lavado en agua fría y secado al aire para preservar las fibras.</p>
+                    </div>
+                `
+            }
+        };
+
+        const articleData = {
+            'deep-work': {
+                tag: 'ESSAY #01 / ENFOQUE PROFUNDO',
+                title: 'Arquitectura del Enfoque Profundo',
+                subtitle: 'Cómo aislar tu atención en una era de estímulos constantes.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">La atención es el recurso más codiciado del siglo XXI. La mayoría de los creadores y estudiantes sufren de fragmentación constante de la atención debido a las notificaciones y el scroll infinito.</p>
+                    <h4 class="font-bold text-mono-900 dark:text-mono-100 text-sm uppercase">1. El Costo del Cambio de Contexto</h4>
+                    <p class="text-xs text-mono-600 dark:text-mono-400 leading-relaxed">Cada vez que miras una notificación tardas un promedio de 23 minutos en volver al estado de flujo original. Al eliminar las interrupciones, duplicas tu velocidad de aprendizaje.</p>
+                    <h4 class="font-bold text-mono-900 dark:text-mono-100 text-sm uppercase">2. Ritualización del Espacio</h4>
+                    <p class="text-xs text-mono-600 dark:text-mono-400 leading-relaxed">Tu cerebro asocia entornos con comportamientos. Mantén tu mesa limpia, deja únicamente las herramientas necesarias y mantén el teléfono en otra habitación durante tus bloques de producción.</p>
+                `
+            },
+            'armario-capsula': {
+                tag: 'GUÍA #02 / ESTILO',
+                title: 'El Armario Cápsula Monocromático',
+                subtitle: 'La regla de las 12 prendas para simplicidad absoluta.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">Un armario saturado produce fatiga por decisión. Al limitar tus opciones a prendas de alta calidad en tonos neutros, garantizas un aspecto impecable en menos de 60 segundos cada mañana.</p>
+                    <div class="space-y-2 font-mono-custom text-xs border border-mono-200 dark:border-mono-800 p-4">
+                        <span class="block font-bold text-mono-900 dark:text-mono-100">LAS 12 PRENDAS ESENCIALES:</span>
+                        <p>• 3 Camisetas de algodón pesado (Negro, Blanco, Gris)</p>
+                        <p>• 2 Sudaderas sin capucha o chaquetas minimalistas</p>
+                        <p>• 2 Pantalones de corte recto o cargo técnico</p>
+                        <p>• 1 Abrigo estructurado o chaqueta de transición</p>
+                        <p>• 2 Pares de calzado (Deportivo blanco / Botas o zapatos negros)</p>
+                        <p>• 2 Accesorios discretos (Reloj analógico / Libreta de bolsillo)</p>
+                    </div>
+                `
+            },
+            'sueno-circadiano': {
+                tag: 'ANÁLISIS #03 / BIOLOGÍA',
+                title: 'Optimización del Sueño Circadiano',
+                subtitle: 'Cómo restaurar tu sistema metabólico a través de la luz.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">El descanso no es un lujo pasivo, es el proceso activo de limpieza de residuos metabólicos en el cerebro. La calidad de tu sueño determina tu nivel de concentración, estado de ánimo y masa muscular.</p>
+                    <p class="text-xs text-mono-600 dark:text-mono-400 leading-relaxed">Evita la cafeína después de las 14:00 horas y asegúrate de reducir la temperatura de tu habitación a unos 18-20°C para facilitar el inicio del sueño profundo.</p>
+                `
+            },
+            'skincare': {
+                tag: 'PUBLICACIÓN / HÁBITOS',
+                title: 'Rutina de Piel de 3 Pasos',
+                subtitle: 'Ciencia básica para el cuidado facial diario.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">No necesitas rutinas complejas. Para mantener una piel clara y protegida contra el envejecimiento prematuro provocada por la radiación UV, solo requieres tres elementos:</p>
+                    <p class="text-xs text-mono-600 dark:text-mono-400 leading-relaxed">1. Limpiador facial suave (Mañana y Noche)<br>2. Hidratante liviana con ceramidas<br>3. Protector solar espectro amplio SPF 50+ diario</p>
+                `
+            },
+            'calistenia': {
+                tag: 'PUBLICACIÓN / ENTRENAMIENTO',
+                title: 'Calistenia Urbana y Dominio Corporal',
+                subtitle: 'Fuerza real utilizando tu propio peso corporal.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">La calistenia desarrolla fuerza relativa, estabilidad del core y salud articular. Enfócate en el rango completo de movimiento y en repeticiones lentas y controladas antes de agregar lastre.</p>
+                `
+            },
+            'procrastinacion': {
+                tag: 'PUBLICACIÓN / MENTALIDAD',
+                title: 'La Regla de los 5 Minutos',
+                subtitle: 'Venciendo la fricción inicial de la acción.',
+                content: `
+                    <p class="text-sm leading-relaxed text-mono-600 dark:text-mono-400">La mente humana sobreestima el dolor de empezar una tarea. Comprométete a trabajar en la tarea objetivo durante solo 5 minutos. Si deseas parar tras ese tiempo, puedes hacerlo. El 90% de las veces, la inercia te mantendrá trabajando.</p>
+                `
+            }
+        };
+
+        // MODAL HANDLERS
+        const backdrop = document.getElementById('modalBackdrop');
+        const modalContent = document.getElementById('modalContent');
+
+        function openPillarModal(key) {
+            const data = pillarData[key];
+            if (!data) return;
+            renderModal(data);
+        }
+
+        function openArticleModal(key) {
+            const data = articleData[key];
+            if (!data) return;
+            renderModal(data);
+        }
+
+        function renderModal(data) {
+            modalContent.innerHTML = `
+                <div class="space-y-4">
+                    <span class="font-mono-custom text-xs text-mono-500 uppercase tracking-widest">${data.tag}</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight">${data.title}</h2>
+                    <p class="text-xs font-mono-custom text-mono-400 border-b border-mono-200 dark:border-mono-800 pb-4">${data.subtitle}</p>
+                    <div class="pt-2 space-y-4">
+                        ${data.content}
+                    </div>
+                </div>
+            `;
+            backdrop.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(e) {
+            if (e.target === backdrop) {
+                closeModalDirect();
+            }
+        }
+
+        function closeModalDirect() {
+            backdrop.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !backdrop.classList.contains('hidden')) {
+                closeModalDirect();
+            }
+        });
+    </script>
+</body>
+</html>IMDEX
